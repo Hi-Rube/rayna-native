@@ -9,9 +9,10 @@
 var parse = require('./lib/parse');
 var server = require('./lib/server');
 
-var time = new Date().getTime();
 
 var exec = function (callback) {
+
+    var time = new Date().getTime();
 
     parse.parse(process.argv[2], function (domObject) {
 
@@ -21,6 +22,6 @@ var exec = function (callback) {
         console.log('\x1B[32mexec time:' + (new Date().getTime() - time) + "ms\x1B[39m");
         callback(jsContent);
     });
-}
+};
 
 server.start(exec);
