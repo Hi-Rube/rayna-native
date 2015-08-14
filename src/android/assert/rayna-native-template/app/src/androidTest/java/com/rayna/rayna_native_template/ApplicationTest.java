@@ -1,4 +1,4 @@
-package com.rayna.rayna_native;
+package com.rayna.rayna_native_template;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
