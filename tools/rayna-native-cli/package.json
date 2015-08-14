@@ -1,0 +1,21 @@
+{
+  "name": "rayna-native-cli",
+  "version": "0.0.1",
+  "description": "tool of build rayna-native's app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "rayna-native",
+    "tool"
+  ],
+  "bin": {
+    "rayna-native-cli": "bin/rayna-native-cli"
+  },
+  "author": "Rube",
+  "license": "ISC",
+  "dependencies": {
+    "color-console": "0.0.1"
+  }
+}

@@ -1,7 +1,6 @@
 /**
- * @page
- * @module
+ * @module download
  * @author Rube
  * @date 15/8/13
- * @desc
+ * @desc download app template
  */
