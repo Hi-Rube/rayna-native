@@ -29,6 +29,14 @@ function walk($, tag, jsobject, object) {
                 tagObject[attribute] = value;
             }
         }
+
+        try {
+            var component = require('../components/' + tagName);
+            component.parse($(this), tagObject);
+        } catch (e) {
+            console.log(e);
+        }
+
         walk($, this, jsobject, tagObject);
     });
 }
@@ -45,7 +53,7 @@ function exec(domObject) {
         walk($, "activity", jsObject, jsObject.activity);
 
         var jsObjectStr = JSON.stringify(jsObject);
-        jsContent += "Rayna.dom(\""+ key +"\", "  + jsObjectStr + ");" + $("script").text();
+        jsContent += "Rayna.dom(\"" + key + "\", " + jsObjectStr + ");" + $("script").text();
     }
 
     return jsContent;

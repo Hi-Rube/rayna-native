@@ -8,6 +8,6 @@
 var baseAttributes = ['id', 'class', 'style'];
 
 module.exports = {
-    textview: [].concat(baseAttributes),
+    textview: ['text'].concat(baseAttributes),
     layout: [].concat(baseAttributes)
 };
