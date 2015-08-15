@@ -1,11 +1,11 @@
 package com.rayna.rayna_native.utils;
 
+import android.net.http.AndroidHttpClient;
 import android.util.Log;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -57,8 +57,9 @@ public class Connect {
                 @Override
                 public void run() {
                     HttpGet httpGet = new HttpGet(host);
+                    AndroidHttpClient androidHttpClient = AndroidHttpClient.newInstance("Android");
                     try {
-                        HttpResponse httpResponse = new DefaultHttpClient().execute(httpGet);
+                        HttpResponse httpResponse = androidHttpClient.execute(httpGet);
                         if (httpResponse.getStatusLine().getStatusCode() == 200) {
                             connectCallback.getJsContent(showResponseResult(httpResponse));
                         } else {
@@ -68,13 +69,15 @@ public class Connect {
                         Log.e("error", e.getMessage());
                         e.printStackTrace();
                     }
+                    androidHttpClient.close();
                 }
             };
 
             Thread httpThread = new Thread(httpRunnable);
             httpThread.start();
+        } else {
+            Log.w("warning", "can't find host");
         }
-        Log.w("warning", "can't find host");
     }
 
     private boolean checkHost() {
