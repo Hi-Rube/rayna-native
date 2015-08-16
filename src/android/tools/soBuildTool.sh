@@ -1,4 +1,5 @@
 #!/usr/bin/env sh
+clear
 rm -rf ../build/*
 rm -rf ../src/rayna-native-lib/app/libs/*
 cd ../jni
