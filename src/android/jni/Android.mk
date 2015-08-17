@@ -35,7 +35,6 @@ endif
 include $(PREBUILT_STATIC_LIBRARY)
 
 
-
 include $(CLEAR_VARS)
 LOCAL_MODULE    := v8_nosnapshot
 ifeq ($(TARGET_ARCH_ABI),armeabi-v7a)
@@ -47,22 +46,11 @@ else ifeq ($(TARGET_ARCH_ABI),x86)
 endif
 include $(PREBUILT_STATIC_LIBRARY)
 
-include $(CLEAR_VARS)
-LOCAL_MODULE    := zip
-ifeq ($(TARGET_ARCH_ABI),armeabi-v7a)
-    LOCAL_SRC_FILES := libs/arm/libzip.a
-else ifeq ($(TARGET_ARCH_ABI),armeabi)
-    LOCAL_SRC_FILES := libs/arm/libzip.a
-else ifeq ($(TARGET_ARCH_ABI),x86)
-    LOCAL_SRC_FILES := libs/x86/libzip.a
-endif
-include $(PREBUILT_STATIC_LIBRARY)
-
 
 include $(CLEAR_VARS)
 LOCAL_CPPFLAGS += -std=c++11
 LOCAL_MODULE    := rayna_native
-LOCAL_SRC_FILES := RunScript.cpp Util.cpp
+LOCAL_SRC_FILES := *.cc
 #LOCAL_C_INCLUDES := $(LOCAL_PATH)/include
 LOCAL_C_INCLUDES := $(LOCAL_PATH)
 

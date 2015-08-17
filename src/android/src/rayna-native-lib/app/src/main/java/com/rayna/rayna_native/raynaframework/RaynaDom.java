@@ -49,7 +49,7 @@ public class RaynaDom {
                 if ("children".equals(attribute)) {
                     childDomObject = domObject.getJSONObject("children");
                 } else if (!elementName.equals("activity")) {
-                    if (RaynaAttributes.checkAttributes(domElement.type, attribute)) {
+                    if (RaynaDomAttributes.checkAttributes(domElement.type, attribute)) {
                         domElement.attributes.put(attribute, domObject.getString(attribute));
                     }
                 }

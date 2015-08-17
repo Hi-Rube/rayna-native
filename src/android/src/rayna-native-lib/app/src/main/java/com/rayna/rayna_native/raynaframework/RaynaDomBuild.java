@@ -5,7 +5,11 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
+
+import com.rayna.rayna_native.components.RaynaBaseComponent;
+import com.rayna.rayna_native.components.RaynaComponentFactory;
+
+import java.util.Iterator;
 
 /**
  * build android component and assemble them
@@ -14,6 +18,9 @@ import android.widget.TextView;
 public class RaynaDomBuild {
 
     public static RaynaDomBuild raynaDomBuild = null;
+
+    private Activity cxt = null;
+    private ViewGroup view = null;
 
     private RaynaDomBuild() {
     }
@@ -29,17 +36,29 @@ public class RaynaDomBuild {
         raynaDomBuild = null;
     }
 
-    public View build(RaynaDomElement root, Context cxt) {
-        Activity activity = (Activity) cxt;
-        RelativeLayout view = new RelativeLayout(cxt);
+    public RaynaDomBuild init(Context cxt) {
+        this.cxt = (Activity) cxt;
+        view = new RelativeLayout(cxt);
         ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         view.setLayoutParams(layoutParams);
-        if ("activity".equals(root.type)) {
-            activity.setContentView(view);
-            TextView tv = new TextView(cxt);
-            tv.setText(root.children.get(0).attributes.get("text"));
-            view.addView(tv);
+        return this;
+    }
+
+    public View build(RaynaDomElement root) {
+        Iterator<RaynaDomElement> doms = root.children.iterator();
+        while (doms.hasNext()) {
+            RaynaDomElement dom = doms.next();
+            RaynaBaseComponent component = RaynaComponentFactory.getComponent(dom.type, cxt);
+            component.setAttributes(dom.attributes);
+            view.addView((View) component);             //TODO:需要优雅的转换 RaynaBaseComponent -> View
+            if (dom.children.size() != 0){
+                build(dom);
+            }
         }
+        return view;
+    }
+
+    public View getView() {
         return view;
     }
 }

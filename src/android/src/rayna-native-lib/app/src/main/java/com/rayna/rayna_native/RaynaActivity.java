@@ -1,6 +1,7 @@
 package com.rayna.rayna_native;
 
 import android.app.Activity;
+import android.util.Log;
 
 import com.rayna.rayna_native.raynaframework.RaynaDom;
 import com.rayna.rayna_native.raynaframework.RaynaDomBuild;
@@ -40,7 +41,7 @@ public class RaynaActivity extends Activity {
         connect.getJsContent(new Connect.ConnectCallback() {
             @Override
             public void getJsContent(String jsContent) {
-                if (jsContent == null) {
+                if (jsContent != null) {
                     _jsContent = jsContent;
                 }
                 Connect.destroy();
@@ -49,9 +50,9 @@ public class RaynaActivity extends Activity {
     }
 
     //just test
-    protected void parse(String jsonObjStr){
+    protected void parse(String jsonObjStr) {
         RaynaDom raynaDom = new RaynaDom("index", jsonObjStr);
         RaynaDomElement root = raynaDom.getRoot();
-        setContentView(RaynaDomBuild.getInstance().build(root, this));
+        setContentView(RaynaDomBuild.getInstance().init(this).build(root));
     }
 }

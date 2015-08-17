@@ -1,8 +1,12 @@
 package com.rayna.rayna_native;
 
 import android.app.Application;
+import android.util.Log;
 
-import com.rayna.rayna_native.raynaframework.RaynaAttributes;
+import com.rayna.rayna_native.raynaframework.RaynaDomAttributes;
+import com.rayna.rayna_native.raynaframework.RaynaNative;
+import com.rayna.rayna_native.raynaframework.RaynaNet;
+import com.rayna.rayna_native.raynaframework.RaynaNetOptions;
 
 /**
  * base main application
@@ -11,7 +15,16 @@ import com.rayna.rayna_native.raynaframework.RaynaAttributes;
 public class RaynaApplication extends Application {
 
     @Override
-    public void onCreate(){
-        RaynaAttributes.init();
+    public void onCreate() {
+        super.onCreate();
+        RaynaDomAttributes.init();
+        RaynaNative.execScript("fetch('http://10.17.217.53:6558');");
     }
+
+    @Override
+    public void onTerminate() {
+        super.onTerminate();
+        System.exit(0);
+    }
+
 }
