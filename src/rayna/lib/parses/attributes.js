@@ -8,6 +8,7 @@
 var baseAttributes = ['id', 'class', 'style'];
 
 module.exports = {
+    activity: ['action'],
     textview: ['text'].concat(baseAttributes),
     layout: [].concat(baseAttributes)
 };

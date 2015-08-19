@@ -8,6 +8,7 @@
 'use strict';
 
 var attributes = require('./attributes');
+var androidDecorate = require('../rayna-framework/android/decorate');
 
 function walk($, tag, jsobject, object) {
 
@@ -41,6 +42,20 @@ function walk($, tag, jsobject, object) {
     });
 }
 
+//parse activity by another way
+function parseActivity($) {
+
+    var attributeCheck = attributes['activity'];
+    var obj = {};
+
+    for (var key in attributeCheck) {
+        var attribute = attributeCheck[key];
+        obj[attribute] = $('activity').attr(attribute);
+    }
+
+    return {activity: obj};
+}
+
 function exec(domObject) {
 
     var jsContent = "";
@@ -48,13 +63,14 @@ function exec(domObject) {
     for (var key of domObject.keys()) {
 
         var $ = domObject.get(key);
-        var jsObject = {activity: {}};
+        var jsObject = parseActivity($);
 
         walk($, "activity", jsObject, jsObject.activity);
 
         var jsObjectStr = JSON.stringify(jsObject);
         jsContent += "Rayna.dom(\"" + key + "\", " + jsObjectStr + ");" + $("script").text();
     }
+    jsContent = androidDecorate.frameworkDecorate(jsContent);
 
     return jsContent;
 }
