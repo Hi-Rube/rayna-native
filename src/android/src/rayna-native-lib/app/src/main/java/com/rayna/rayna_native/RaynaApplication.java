@@ -18,7 +18,6 @@ public class RaynaApplication extends Application {
     public void onCreate() {
         super.onCreate();
         RaynaDomAttributes.init();
-        RaynaNative.execScript("fetch('http://10.17.217.53:6558');");
     }
 
     @Override

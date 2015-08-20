@@ -18,6 +18,8 @@ public class RaynaDom {
     private String moduleId = null;
     private RaynaDomElement root = new RaynaDomElement();
 
+    private String action = "";
+
     public RaynaDom(String moduleId, String domObjectStr) {
         this.moduleId = moduleId;
         JSONTokener jsonTokener = new JSONTokener(domObjectStr);
@@ -33,6 +35,14 @@ public class RaynaDom {
         }
     }
 
+    public String getModuleId() {
+        return moduleId;
+    }
+
+    public String getAction() {
+        return action;
+    }
+
     public RaynaDomElement getRoot() {
         return root;
     }
@@ -41,6 +51,7 @@ public class RaynaDom {
         if (domObject == null) {
             return;
         }
+
         try {
             Iterator<String> keys = domObject.keys();
             JSONObject childDomObject = null;
@@ -71,6 +82,7 @@ public class RaynaDom {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
     }
 
     private void parseDomActivity(JSONObject domObject) {
@@ -82,12 +94,25 @@ public class RaynaDom {
         root.type = "activity";
         Iterator<String> keys = null;
         JSONObject activityDOM = null;
+
         try {
             activityDOM = domObject.getJSONObject("activity");
             keys = activityDOM.keys();
+            while (keys.hasNext()) {
+                String attribute = keys.next();
+                //deal action
+                if ("action".equals(attribute)) {
+                    action = activityDOM.getString(attribute);
+                }
+
+                if (RaynaDomAttributes.checkAttributes("activity", attribute)) {
+                    root.attributes.put(attribute, activityDOM.getString(attribute));
+                }
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
         while (keys.hasNext()) {
             String attribute = keys.next();
             if (attribute != "children") {

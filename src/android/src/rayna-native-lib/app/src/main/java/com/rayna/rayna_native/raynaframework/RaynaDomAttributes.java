@@ -17,8 +17,10 @@ public class RaynaDomAttributes {
     public static void init() {
         String[] BASE = new String[]{"id", "class", "style"};
         String[] TEXTVIEW = new String[]{"id", "class", "style", "text"};
+        String[] ACTIVITY = new String[]{"action"};
         attributesMap.put("base", BASE);
         attributesMap.put("textview", TEXTVIEW);
+        attributesMap.put("activity", ACTIVITY);
     }
 
     public static boolean checkAttributes(String type, String attribute) {

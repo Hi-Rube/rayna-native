@@ -2,6 +2,8 @@ package com.rayna.rayna_native.raynaframework;
 
 import android.util.Log;
 
+import java.util.HashMap;
+
 /**
  * provide interface to v8
  * Created by Rube on 15/8/18.
@@ -29,9 +31,12 @@ public class RaynaNative {
         });
     }
 
-    public static void show(String test) {
-        Log.v("--------------------------", test);
+    public static HashMap<String, String> buildDom(){
+        HashMap<String, String> dom = new HashMap<String, String>();
+        return dom;
     }
 
     public static native void execScript(String script);
+
+    public static native void callJsMethod();
 }
