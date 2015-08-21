@@ -31,12 +31,8 @@ public class RaynaNative {
         });
     }
 
-    public static HashMap<String, String> buildDom(){
-        HashMap<String, String> dom = new HashMap<String, String>();
-        return dom;
-    }
-
     public static native void execScript(String script);
 
-    public static native void callJsMethod();
+    public static native Object callJsMethod(String methodName, int returnType, Object... args);
+
 }

@@ -7,6 +7,7 @@ import com.rayna.rayna_native.raynaframework.RaynaDom;
 import com.rayna.rayna_native.raynaframework.RaynaDomBuild;
 import com.rayna.rayna_native.raynaframework.RaynaDomElement;
 import com.rayna.rayna_native.raynaframework.RaynaNative;
+import com.rayna.rayna_native.raynaframework.RaynaNativeType;
 import com.rayna.rayna_native.utils.Connect;
 
 import java.util.HashMap;
@@ -40,6 +41,7 @@ public class RaynaActivity extends Activity {
 
     protected void start() {
         if (_jsContent != null) {
+            RaynaNative.execScript(_jsContent);
             return;
         }
         if (connect.getHost() == null) {
@@ -50,21 +52,19 @@ public class RaynaActivity extends Activity {
             public void getJsContent(String jsContent) {
                 if (jsContent != null) {
                     _jsContent = jsContent;
+                    RaynaNative.execScript(_jsContent);
+                    showView();
+                } else {
+                    Log.e("warning", "can't load jsContent");
                 }
-                RaynaNative.execScript(_jsContent);
                 Connect.destroy();
             }
         });
     }
 
-    private void parseDOM(){
-        HashMap<String, String> doms = RaynaNative.buildDom();
-        Set<String> domSet = doms.keySet();
-        Iterator<String> keys = domSet.iterator();
-        while (keys.hasNext()){
-            String key = keys.next();
-            RaynaDom dom = new RaynaDom(key, doms.get(key));
-            domManager.addRaynaDom(dom);
-        }
+    private void showView() {
+        String appStr = (String) RaynaNative.callJsMethod("domGet", RaynaNativeType.STRING);
+        domManager.parseDOM(appStr);
+        this.setContentView(domManager.getMainView());
     }
 }

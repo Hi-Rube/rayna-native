@@ -7,6 +7,10 @@ import android.view.View;
 import com.rayna.rayna_native.raynaframework.RaynaDom;
 import com.rayna.rayna_native.raynaframework.RaynaDomBuild;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONTokener;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -52,5 +56,20 @@ public class RaynaActivityDomManager {
         }
         Log.e("error", "no main Activity");
         return null;
+    }
+
+    public void parseDOM(String appStr) {
+        JSONTokener jsonTokener = new JSONTokener(appStr);
+        try {
+            JSONObject jsonObject = (JSONObject) jsonTokener.nextValue();
+            Iterator<String> keys = jsonObject.keys();
+            while (keys.hasNext()) {
+                String key = keys.next();
+                RaynaDom dom = new RaynaDom(key, jsonObject.getString(key));
+                this.addRaynaDom(dom);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }
