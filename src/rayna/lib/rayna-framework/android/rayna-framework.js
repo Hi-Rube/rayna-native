@@ -19,7 +19,7 @@ var Native = {
     fetch: function (url, option, id) {
 
     },
-    domGET: function () {
+    domGet: function () {
 
         var domObject = {};
 
@@ -30,7 +30,7 @@ var Native = {
                 domObject[arr[1]] = JSON.stringify(Rayna.DomCache[arr[0]]);
             }
         }
-        return domObject;
+        return JSON.stringify(domObject);
     },
     domDone: function (moduleID) {
 
