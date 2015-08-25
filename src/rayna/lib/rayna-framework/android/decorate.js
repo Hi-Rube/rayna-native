@@ -10,7 +10,7 @@ var fs = require('fs');
 module.exports = {
     frameworkDecorate: function (script) {
 
-        var path = __dirname + '/rayna-framework.js';
+        var path = __dirname + '/rayna-androidFramework.js';
         var raynaScript = fs.readFileSync(path, "utf-8");
 
         return raynaScript + script;

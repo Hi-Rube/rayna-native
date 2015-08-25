@@ -9,7 +9,10 @@ var fs = require('fs');
 
 module.exports = {
     frameworkDecorate: function (script) {
-        var raynaScript = fs.readdirSync("./rayna-framework.js", "utf-8");
-        return script + raynaScript;
+
+        var path = __dirname + '/rayna-webFramework.js';
+        var raynaScript = fs.readFileSync(path, "utf-8");
+
+        return raynaScript + script;
     }
 };

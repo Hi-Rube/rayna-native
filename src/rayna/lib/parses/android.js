@@ -32,7 +32,7 @@ function walk($, tag, jsobject, object) {
         }
 
         try {
-            var component = require('../components/' + tagName);
+            var component = require('../components/' + tagName + '-android');
             component.parse($(this), tagObject);
         } catch (e) {
             console.log(e);
