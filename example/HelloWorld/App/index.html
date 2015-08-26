@@ -1,8 +1,14 @@
-<Activity action="main">
-    <TextView id="rube">Hello World!</TextView>
+<Activity action="main" title="hello world test">
+    <TextView id="rube" onClick="goToIndex2">Hello World!</TextView>
 </Activity>
-<script>
-    Rayna.run("index", function () {
-        Rayna.log(1);
+<script module="index" action="main">
+    R.run("index", function () {
+        R.log('index');
     });
+
+    function goToIndex2(){
+        R.runTo("index2", function () {
+            R.log('index2');
+        });
+    }
 </script>
