@@ -9,7 +9,10 @@
   "author": "Rube",
   "license": "ISC",
   "dependencies": {
+    "color-console": "0.0.1",
     "jquery": "^2.1.4",
-    "jsdom": "^3.1.2"
+    "jsdom": "^3.1.2",
+    "koa": "~1.0.0",
+    "koa-static": "~1.4.9"
   }
 }
