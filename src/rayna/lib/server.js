@@ -8,6 +8,7 @@
 'use strict';
 
 var http = require('http');
+var colorConsole = require('color-console');
 
 module.exports = {
     start: function (exec) {
@@ -20,5 +21,7 @@ module.exports = {
                 res.end();
             })
         }).listen(6558);
+
+        colorConsole.green('server have started, listening port 6558');
     }
 };
