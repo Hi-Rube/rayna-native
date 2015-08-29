@@ -6,22 +6,48 @@
 
 'use strict';
 
+var colorConsole = require('color-console');
 var parse = require('./lib/parse');
-var server = require('./lib/server');
 
+var commands = {
+    '-web': 'web',
+    '-android': 'android',
+    '-ios': 'ios'
+};
+var option = {
+    'path':''
+};
+
+var dirPath = process.argv[2];
+var command = process.argv[3];
+
+if (!commands[command]) {
+    return colorConsole.red('can\'t found this command \'' + command +'\'');
+}
+
+var server = require('./lib/server');
+if (command == '-web'){
+    server = require('./lib/staticServer');
+    option.path = dirPath;
+}
+
+global.PLATFORM = commands[command];
+global.APP_PATH = dirPath;
 
 var exec = function (callback) {
 
     var time = new Date().getTime();
 
-    parse.parse(process.argv[2], function (domObject) {
+    parse.parse(dirPath, function (domObject) {      //domObject -> 单个页面的 dom 总对象
 
-        var androidParse = require('./lib/parses/android');
-        var jsContent = androidParse.exec(domObject);
+        var domParse = require('./lib/parses/' + commands[command]);
+        var jsContent = domParse.exec(domObject);       //native 返回 jsContent / web 没有返回
 
-        console.log('\x1B[32mexec time:' + (new Date().getTime() - time) + "ms\x1B[39m");
-        callback(jsContent);
+        colorConsole.green('exec time:' + (new Date().getTime() - time) + 'ms');
+        if (callback) {
+            callback(jsContent);
+        }
     });
 };
 
-server.start(exec);
+server.start(exec, option);
