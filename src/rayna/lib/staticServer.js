@@ -19,8 +19,10 @@ module.exports = {
       fs.mkdirSync(dirPath);
     }
 
-    exec();                     //执行解析,使解析结果输出到应用的 static-web 目录下
-
+    app.use(function *(next) {
+      exec();                     //执行解析,使解析结果输出到应用的 static-web 目录下
+      yield next;
+    });
     app.use(serve(dirPath));
     app.listen(6556);
     colorConsole.green('static server have started, listening port 6556');
