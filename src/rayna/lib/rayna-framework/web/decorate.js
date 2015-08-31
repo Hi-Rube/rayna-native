@@ -13,6 +13,10 @@ module.exports = {
         var path = __dirname + '/rayna-webFramework.js';
         var raynaScript = fs.readFileSync(path, "utf-8");
 
-        return raynaScript + script;
+        if (script) {
+            return '<script type=\"text/javascript\">' + raynaScript + '</script>' + script;                //TODO:分离
+        } else {
+            return raynaScript;
+        }
     }
 };
