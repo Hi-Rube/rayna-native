@@ -42,25 +42,43 @@ Rayna = {
         var selector = selector.trim();
         var selectorArr = selector.split(' ');
 
-        function walk(domain, saIndex) {                     //暂时只支持简单地选择器
+        function walk(domain, saIndex) {                      //暂时只支持简单的选择器
 
             if (saIndex == selectorArr.length) {
-                return domain;
+                return result.push(domain);
             }
 
             var saItem = selectorArr[saIndex];
+            var nowDomain;
             switch (saItem.charAt(0)) {
                 case '#':
                     var content = saItem.substr(1, saItem.length - 1);
-                    return walk(domain._childrenIdMap[content], saIndex + 1);
+                    nowDomain = domain._childrenIdMap[content];
                     break;
                 case '.':
+                    var content = saItem.substr(1, saItem.length - 1);
+                    nowDomain = domain._childrenClassMap[content];
                     break;
-                default :
+                default :                                    //label
+                    var content = saItem.toLowerCase();
+                    nowDomain = domain._childrenTagMap[content];
+            }
+
+            if (nowDomain instanceof Array) {
+                for (var i = 0, len = nowDomain.length; i < len; i++) {
+                    walk(nowDomain[i], saIndex + 1);
+                }
+            } else {
+                walk(nowDomain, saIndex + 1);
             }
         }
 
-        return walk(Rayna.cache.nodeTree[0], 0);
+        var result = [];
+        walk(Rayna.cache.nodeTree[0], 0);
+        if (result.length == 1) {
+            return result[0];
+        }
+        return result;
     },
     'define': function () {
 
@@ -123,6 +141,7 @@ Rayna._Node = function (tagName, id, className, dom) {
     this.parent = null;
     this._childrenClassMap = {};
     this._childrenIdMap = {};
+    this._childrenTagMap = {};
 };
 
 Rayna._Node.prototype.addChildren = function (child) {
@@ -138,7 +157,7 @@ Rayna._parse = function () {
     var body = document.getElementsByTagName('body');
     var nodeTree = Rayna.cache.nodeTree;
 
-    function restoreClassAndId(className, id, node) {
+    function restoreClassAndId(tagName, className, id, node) {
 
         if (!node.parent) {
             return;
@@ -146,6 +165,7 @@ Rayna._parse = function () {
 
         var classMap = node.parent._childrenClassMap;
         var idMap = node.parent._childrenIdMap;
+        var tagMap = node.parent._childrenTagMap;
 
         if (className) {
             classMap[className] || (classMap[className] = []);
@@ -157,7 +177,11 @@ Rayna._parse = function () {
             }
             idMap[id] = node;
         }
-        restoreClassAndId(className, id, node.parent);
+        if (tagName) {
+            tagMap[tagName] || (tagMap[tagName] = []);
+            tagMap[tagName].push(node);
+        }
+        restoreClassAndId(tagName, className, id, node.parent);
     }
 
     function walk(dom, parent) {
@@ -171,10 +195,10 @@ Rayna._parse = function () {
             var nowNode = new Rayna._Node(tagName, id, className, child);
 
             nodeTree.push(nowNode);
-
             nowNode.setParent(parent);
             parent.addChildren(child);
-            restoreClassAndId(className, id, nowNode);
+
+            restoreClassAndId(tagName, className, id, nowNode);
             walk(child, nowNode);
         }
     }
