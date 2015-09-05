@@ -61,15 +61,17 @@ public class Connect {
                     try {
                         HttpResponse httpResponse = androidHttpClient.execute(httpGet);
                         if (httpResponse.getStatusLine().getStatusCode() == 200) {
-                            connectCallback.getJsContent(showResponseResult(httpResponse));
+                            String jsContent = showResponseResult(httpResponse);
+                            androidHttpClient.close();
+                            connectCallback.getJsContent(jsContent);
                         } else {
                             Log.e("error", "404 Not Found - jsContent not found");
                         }
                     } catch (IOException e) {
                         Log.e("error", e.getMessage());
+                        androidHttpClient.close();
                         e.printStackTrace();
                     }
-                    androidHttpClient.close();
                 }
             };
 

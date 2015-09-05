@@ -50,7 +50,7 @@ include $(PREBUILT_STATIC_LIBRARY)
 include $(CLEAR_VARS)
 LOCAL_CPPFLAGS += -std=c++11
 LOCAL_MODULE    := rayna_native
-LOCAL_SRC_FILES := *.cc
+LOCAL_SRC_FILES := RaynaNative.cc ArgConverter.cc
 #LOCAL_C_INCLUDES := $(LOCAL_PATH)/include
 LOCAL_C_INCLUDES := $(LOCAL_PATH)
 
