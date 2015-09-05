@@ -75,11 +75,6 @@ Rayna = {
 
         var result = [];
         walk(Rayna.cache.nodeTree[0], 0);
-        result = result.filter(function (item) {
-            if (item != undefined) {
-                return item;
-            }
-        });
         if (result.length == 1) {
             return result[0];
         }
@@ -162,7 +157,7 @@ Rayna._parse = function () {
     var body = document.getElementsByTagName('body');
     var nodeTree = Rayna.cache.nodeTree;
 
-    function restoreClassAndId(tagName, className, id, node, nowNode) {
+    function restoreClassAndId(tagName, className, id, node) {
 
         if (!node.parent) {
             return;
@@ -174,19 +169,19 @@ Rayna._parse = function () {
 
         if (className) {
             classMap[className] || (classMap[className] = []);
-            classMap[className].push(nowNode);
+            classMap[className].push(node);
         }
         if (id) {
             if (idMap[id]) {
                 console.error(Rayna.name + ': id:\"' + id + '\" has already exist');
             }
-            idMap[id] = nowNode;
+            idMap[id] = node;
         }
         if (tagName) {
             tagMap[tagName] || (tagMap[tagName] = []);
-            tagMap[tagName].push(nowNode);
+            tagMap[tagName].push(node);
         }
-        restoreClassAndId(tagName, className, id, node.parent, nowNode);
+        restoreClassAndId(tagName, className, id, node.parent);
     }
 
     function walk(dom, parent) {
@@ -201,9 +196,9 @@ Rayna._parse = function () {
 
             nodeTree.push(nowNode);
             nowNode.setParent(parent);
-            parent.addChildren(nowNode);
+            parent.addChildren(child);
 
-            restoreClassAndId(tagName, className, id, nowNode, nowNode);
+            restoreClassAndId(tagName, className, id, nowNode);
             walk(child, nowNode);
         }
     }

@@ -1,7 +1,8 @@
 #ifndef ARGCONVERTER
 #define ARGCONVERTER
 
-#include "Global.h"
+#include "include/v8.h"
+#include "jni.h"
 #include <string>
 
 namespace rayna {
