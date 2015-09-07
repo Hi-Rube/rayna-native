@@ -7,9 +7,13 @@
 
 Rayna = {
     'name': 'Rayna 0.1',
+    'options': {
+        ajaxPoolSize: 5          //default
+    },
     'cache': {
         'pageName': null,
         'nodeTree': [],
+        'objectCache': {},
         'moduleMap': {}
     },
     'page': function (pageName) {
@@ -37,7 +41,18 @@ Rayna = {
         func();                                                //注意这个回调是提前执行,并没有回调执行
         window.location = url;
     },
-    '$': function (selector) {
+    '$$': function (selector) {
+
+        var components = this.$(selector, true);
+        if (components.length == 1) {
+            return components[0].component;
+        } else {
+            return components.map(function (item) {
+                return item.component;
+            });
+        }
+    },
+    '$': function (selector, mode) {
 
         var selector = selector.trim();
         var selectorArr = selector.split(' ');
@@ -80,7 +95,7 @@ Rayna = {
                 return item;
             }
         });
-        if (result.length == 1) {
+        if (result.length == 1 && !mode) {
             return result[0];
         }
         return result;
@@ -127,6 +142,18 @@ Rayna = {
             return null;
         }
         return R.cache.moduleMap[moduleName].func();
+    },
+    'fetch': function (url, option) {
+
+        var callbackList = [];
+        return {
+            then: function (callback) {
+
+            },
+            done: function (callback) {
+
+            }
+        }
     }
 };
 
